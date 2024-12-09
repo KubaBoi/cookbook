@@ -20,6 +20,7 @@ class ApetitParser:
         recipe = ingredients
         recipe["name"] = name
         recipe["steps"] = steps
+        recipe["source"] = url
         return IParser.save_json(recipe)
 
     @staticmethod
@@ -73,5 +74,3 @@ class ApetitParser:
             for p in ps:
                 res.append(p.text.strip().replace("\n", "<br>"))
         return res
-    
-ApetitParser.parse("https://www.apetitonline.cz/recept/bleskovy-ovocny-kolac-s-drobenkou")

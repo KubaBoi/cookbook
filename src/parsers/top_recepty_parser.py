@@ -20,6 +20,8 @@ class TopReceptyParser:
         recipe = ingredients
         recipe["name"] = name
         recipe["steps"] = steps
+        recipe["source"] = url
+
         return IParser.save_json(recipe)
 
     @staticmethod
@@ -51,6 +53,8 @@ class TopReceptyParser:
         portions = re.findall(r"\d+", portions_text)
         if (len(portions) > 0):
             portions = portions[0]
+        else:
+            portions = None
 
         ps = ingredients.find("div", attrs={"class": "u-mb-last-0"}).find_all("p")
 

@@ -1,12 +1,14 @@
 
 from src.parsers.top_recepty_parser import TopReceptyParser
 from src.parsers.apetit_parser import ApetitParser
+from src.parsers.recepty_cz_parser import ReceptyCzParser
 
 class ParserManager:
 
     PARSERS = [
         TopReceptyParser,
-        ApetitParser
+        ApetitParser,
+        ReceptyCzParser
     ]
 
     @staticmethod
