@@ -1,34 +1,34 @@
 import re
-import json
 from bs4 import BeautifulSoup
 
-from downloader import Downloader
+from src.parsers.iparser import IParser
 
 class TopReceptyParser:
 
-    def __init__(self):
-        pass
+    @staticmethod
+    def match(url: str) -> bool:
+        return url.startswith("https://www.toprecepty.cz")
 
-    def parse(self, url: str):
-        html = Downloader.download(url)
-        parsed_html = BeautifulSoup(html, features="html.parser")
-        body = parsed_html.body
+    @staticmethod
+    def parse(url: str) -> str:
+        body = IParser.get_body(url)
 
-        name = self.parse_name(body)
-        ingredients = self.parse_ingredients(body)
-        steps = self.parse_steps(body)
+        name = TopReceptyParser.parse_name(body)
+        ingredients = TopReceptyParser.parse_ingredients(body)
+        steps = TopReceptyParser.parse_steps(body)
 
         recipe = ingredients
         recipe["name"] = name
         recipe["steps"] = steps
-        with open("recipe.json", "w", encoding="utf-8") as f:
-            f.write(json.dumps(ingredients, ensure_ascii=False))
+        return IParser.save_json(recipe)
 
-    def parse_name(self, parsed_html: BeautifulSoup) -> str:
+    @staticmethod
+    def parse_name(parsed_html: BeautifulSoup) -> str:
         header = parsed_html.find("h1", attrs={"class": "b-recipe-info__title"})
         return header.text.strip()
 
-    def parse_ingredients(self, parsed_html: BeautifulSoup) -> dict:
+    @staticmethod
+    def parse_ingredients(parsed_html: BeautifulSoup) -> dict:
         """
         Seznam ingrediencí je v <div> s id="ingredients". 
         Pocet porci je v <h2 class="b-ingredients__title"><span>.
@@ -71,7 +71,8 @@ class TopReceptyParser:
                     res["ingredients"].append((ings[0].strip(), ""))
         return res
     
-    def parse_steps(self, parsed_html: BeautifulSoup) -> list:
+    @staticmethod
+    def parse_steps(parsed_html: BeautifulSoup) -> list:
         """
         Kroky postupu jsou zapsany v <div> s id="steps". Uvnitr tohoto divu
         je <ol> a kazdy <li> uvnitr ma v sobe <label><span><span> ve kterem
