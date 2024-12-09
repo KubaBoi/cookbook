@@ -36,7 +36,7 @@ class ApetitParser:
         Pokud je zaroven pritomna trida s-recipe__ingredients-item--subtitle"
         pak je div nadpis
 
-        Nenadpisove divy, maji v sobe <strong> a dva <span> s prisluslnymi tagy
+        Nenadpisove divy, maji v sobe <strong> a dva <span> s prisluslnymi classami
 
         Vraci slovnik
         """
