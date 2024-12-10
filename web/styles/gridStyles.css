@@ -1,16 +1,16 @@
 .menu-grid { grid-area: 1 / 1 / 2 / 2;
     border-right: 1px solid #8f8f8f; }
 .header-grid { grid-area: 1 / 2 / 2 / 6; }
-.recipes-grid { grid-area: 2 / 1 / 2 / 2;
+.recipes-grid { grid-area: 2 / 1 / 9 / 2;
     border-right: 1px solid #8f8f8f;
     border-top: 1px solid #8f8f8f; }
-.detail-grid { grid-area: 2 / 2 / 2 / 6; 
+.detail-grid { grid-area: 2 / 2 / 9 / 6; 
     border-top: 1px solid #8f8f8f;} 
 
 .grid-container {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: 10% 90%;
+    grid-template-rows: repeat(8, 1fr);
 }
 
 .grid-container>div {

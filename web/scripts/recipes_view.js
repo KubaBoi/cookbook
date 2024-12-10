@@ -22,6 +22,14 @@ async function buildRecipes()
     let table = document.getElementById("recipes_table");
     clearTable(table);
     recps.recipes_names.forEach(element => {
-        addRow(table, [{text: element}]);
+        addRow(table, [{text: element, 
+                attributes: [
+                    {
+                        name: "onclick", 
+                        value: "buildRecipe('" + element + "')"
+                    }
+                ]
+            }
+        ]);
     });
 }

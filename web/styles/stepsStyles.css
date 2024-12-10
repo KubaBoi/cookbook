@@ -1,0 +1,14 @@
+.steps-table {
+    float: left;
+    width: 75%;
+}
+
+table.steps-table td {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+table.steps-table td:first-child {
+    background-color: coral;
+    text-align: center;
+}

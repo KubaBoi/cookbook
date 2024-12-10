@@ -1,5 +1,4 @@
 .recipes-table {
-    height: 100%;
     width: 100%;
 }
 
@@ -13,7 +12,6 @@ table.recipes-table tr:nth-child(even) {
 }
 
 table.recipes-table tr:hover {
-    /* background-color: #8f8f8f; */
-    background-color: coral;
+    background-color: #8f8f8f;
     cursor: pointer;
 }

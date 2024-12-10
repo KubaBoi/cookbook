@@ -35,8 +35,10 @@ async function buildRecipe(name) {
 
     let stepsTable = document.getElementById("recipe_steps");
     clearTable(stepsTable);
+    let i = 0;
     recipe.steps.forEach(element => {
         addRow(stepsTable, [
+            {text: i++},
             {text: element}
         ])
     });
