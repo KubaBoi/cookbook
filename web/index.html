@@ -1,14 +1,50 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="cs">
+
 <head>
-<title>Cheese Application</title>
+    <meta charset="UTF-8">
+    <title>Cheese Application</title>
+
+    <link rel="stylesheet" href="styles/gridStyles.css">
+    <link rel="stylesheet" href="styles/recipesStyles.css">
+
 </head>
+
 <body>
 
-<h1>Welcome to Dairy Development</h1>
-<h2>Everything seems good :)</h2>
-<p>You are reading this page and that's great because it means that your Cheese Application is configured right.</p>
-<p>Thank you for using Cheese Framework.</p>
+    <div class="grid-container">
+        <div class="header-grid" style="padding: 8px;">
+            <h1 id="recipe_name"></h1>
+            <a id="recipe_source" target="_blank">Zdroj</a>
+        </div>
+        <div class="menu-grid">
+            <button>Přidat recept</button>
+        </div>
+        <div class="recipes-grid">
+            <table id="recipes_table" class="recipes-table"></table>
+        </div>
+        <div class="detail-grid">
+            <table id="recipe_ings" style="float: left; width: 25%;"></table>
+            <table id="recipe_steps" style="float: left; width: 75%;"></table>
+        </div>
+    </div>
+
+
+    <script src="https://kubaboi.github.io/CheeseFramework/public/scripts/time.js"></script>
+    <script src="https://kubaboi.github.io/CheeseFramework/public/scripts/communication.js"></script>
+    <script src="https://kubaboi.github.io/CheeseFramework/public/scripts/elementManager.js"></script>
+    <script src="https://kubaboi.github.io/CheeseFramework/public/scripts/tableBuilder.js"></script>
+
+    <script src="scripts/recipes_view.js"></script>
+    <script src="scripts/recipe_view.js"></script>
+
+    <script>
+        buildRecipes();
+        buildRecipe("Rychlá bábovka");
+
+    </script>
 
 </body>
+
 </html>
