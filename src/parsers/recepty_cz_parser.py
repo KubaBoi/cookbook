@@ -58,3 +58,7 @@ class ReceptyCzParser:
             splt = re.search(r"\.\S", steps)
         res.append(steps)
         return res
+    
+    @staticmethod
+    def parse_header(parsed_json: dict) -> dict:
+        pass

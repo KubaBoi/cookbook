@@ -1,4 +1,4 @@
-import json
+import re
 from bs4 import BeautifulSoup
 
 from src.parsers.iparser import IParser
@@ -16,9 +16,11 @@ class ApetitParser:
         name = ApetitParser.parse_name(body)
         ingredients = ApetitParser.parse_ingredients(body)
         steps = ApetitParser.parse_steps(body)
+        header = ApetitParser.parse_header(body)
 
         recipe = ingredients
         recipe["name"] = name
+        recipe["header"] = header
         recipe["steps"] = steps
         recipe["source"] = url
         return IParser.save_json(recipe)
@@ -44,16 +46,25 @@ class ApetitParser:
         main_div = parsed_html.find("div", attrs={"class": "s-recipe__ingredients-items"})
         divs = main_div.find_all("div", attrs={"class": "s-recipe__ingredients-item"})
 
-        res = {"portions": None, "ingredients": []}
+        res = {"ingredients": []}
         for div in divs:
             if ("s-recipe__ingredients-item--subtitle" in div["class"]):
                 res["ingredients"].append((div.text.strip(), None))
                 continue
             
             name = div.find("strong").text
-            quant = div.find("span", attrs={"class": "s-recipe__ingredients-quantity"}).text
-            unit = div.find("span", attrs={"class": "s-recipe__ingredients-unit"}).text
-            res["ingredients"].append((name, f"{quant} {unit}"))
+            quant = None
+            unit = None
+
+            quant_span = div.find("span", attrs={"class": "s-recipe__ingredients-quantity"})
+            if (quant_span is not None):
+                quant = quant_span.text
+            
+            unit_span = div.find("span", attrs={"class": "s-recipe__ingredients-unit"})
+            if (unit_span is not None):
+                unit = unit_span.text
+            
+            res["ingredients"].append((name, f"{quant} {unit}".strip()))
 
         return res
     
@@ -74,3 +85,23 @@ class ApetitParser:
             for p in ps:
                 res.append(p.text.strip().replace("\n", "<br>"))
         return res
+    
+    @staticmethod
+    def parse_header(parsed_html: BeautifulSoup) -> dict:
+        header_div = parsed_html.find("div", attrs={"class": "s-recipe-header__info-items"})
+        spans = header_div.find_all("span")
+
+        header = {}
+        header["duration"] = spans[0].text.strip()
+        header["difficulty"] = spans[1].text.strip()
+        header["portions"] = None
+        header["portion_unit"] = None
+        port_text = spans[2].text.strip()
+
+        portions = port_text.split(" ")
+        if (len(portions) > 1):
+            header["portions"] = portions[1]
+        if (len(portions) > 2):
+            header["portion_unit"] = portions[2]
+
+        return header

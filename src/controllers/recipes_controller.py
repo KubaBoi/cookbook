@@ -7,7 +7,6 @@ from Cheese.cheeseController import CheeseController as cc
 from Cheese.resourceManager import ResMan
 
 from src.parsers.parser_manager import ParserManager
-from src.tools.downloader import Downloader
 
 #@controller /recipes;
 class RecipesController(cc):
@@ -56,13 +55,6 @@ class RecipesController(cc):
         if (name is None):
             raise NotFound("Parser was not found")
         return cc.createResponse({"name": name}, 201, {"Content-type": "application/json"})
-
-    #@get /proxy;
-    @staticmethod
-    def proxy(server, path, auth):
-        url = "https://www.recepty.cz/recept/rychla-babovka-2-3875"
-        res = Downloader.download(url)
-        return cc.createResponse({"data": res})
 
     # private methods
 
