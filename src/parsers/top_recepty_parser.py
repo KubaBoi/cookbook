@@ -16,9 +16,11 @@ class TopReceptyParser:
         name = TopReceptyParser.parse_name(body)
         ingredients = TopReceptyParser.parse_ingredients(body)
         steps = TopReceptyParser.parse_steps(body)
+        header = TopReceptyParser.parse_header(body)
 
         recipe = ingredients
         recipe["name"] = name
+        recipe["header"] = header
         recipe["steps"] = steps
         recipe["source"] = url
 
@@ -49,16 +51,9 @@ class TopReceptyParser:
         """
         ingredients = parsed_html.find("div", attrs={"id": "ingredients"})
 
-        portions_text = ingredients.find("h2", attrs={"class": "b-ingredients__title"}).find("span").text.strip()
-        portions = re.findall(r"\d+", portions_text)
-        if (len(portions) > 0):
-            portions = portions[0]
-        else:
-            portions = None
-
         ps = ingredients.find("div", attrs={"class": "u-mb-last-0"}).find_all("p")
 
-        res = {"portions": portions, "ingredients": []}
+        res = {"ingredients": []}
         for p in ps:
             if ("b-ingredients__item--title" in p["class"]):
                 # title (napr Testicko: )
@@ -92,6 +87,25 @@ class TopReceptyParser:
             res.append(li.find("label").find("span").find("span").text.strip())
         return res
             
+    @staticmethod
+    def parse_header(parsed_html: BeautifulSoup) -> list:
+        duration_p = parsed_html.find("p", attrs={"class": "b-recipe-info__time"})
+        difficulty_p = parsed_html.find("p", attrs={"class": "b-recipe-info__difficulty"})
 
+        header = {}
+        header["duration"] = duration_p.find_all("span")[1].text.strip().split("\t")[-1]
+        header["difficulty"] = difficulty_p.find_all("span")[1].text.strip()
+        header["portions"] = None
+        header["portion_unit"] = None
+
+        ingredients = parsed_html.find("div", attrs={"id": "ingredients"})
+        portions_text = ingredients.find("h2", attrs={"class": "b-ingredients__title"}).find("span").text.strip()
+        portions = portions_text.split(" ")
+        if (len(portions) > 1):
+            header["portions"] = portions[1]
+        if (len(portions) > 2):
+            header["portion_unit"] = portions[2]
+
+        return header
 
     

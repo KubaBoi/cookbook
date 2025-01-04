@@ -9,15 +9,16 @@ class IParser:
 
     @staticmethod
     def get_body(url: str) -> BeautifulSoup:
-        html = Downloader.download(url)
-        parsed_html = BeautifulSoup(html, features="html.parser")
-        return parsed_html.body
+        return IParser.get_site(url).body
     
     @staticmethod
     def get_head(url: str) -> BeautifulSoup:
+        return IParser.get_site(url).head
+    
+    @staticmethod
+    def get_site(url: str) -> BeautifulSoup:
         html = Downloader.download(url)
-        parsed_html = BeautifulSoup(html, features="html.parser")
-        return parsed_html.head
+        return BeautifulSoup(html, features="html.parser")
     
     @staticmethod
     def save_json(recipe: dict) -> str:
