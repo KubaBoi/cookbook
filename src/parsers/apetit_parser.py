@@ -100,7 +100,7 @@ class ApetitParser:
 
         portions = port_text.split(" ")
         if (len(portions) > 1):
-            header["portions"] = portions[1]
+            header["portions"] = int(portions[1])
         if (len(portions) > 2):
             header["portion_unit"] = portions[2]
 

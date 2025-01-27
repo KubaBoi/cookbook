@@ -71,7 +71,7 @@ class ReceptyCzParser:
 
         portions = parsed_json["recipeYield"].split(" ")
         if (len(portions) > 0):
-            header["portions"] = portions[0]
+            header["portions"] = int(portions[0])
         if (len(portions) > 1):
             header["portion_unit"] = portions[1]
 

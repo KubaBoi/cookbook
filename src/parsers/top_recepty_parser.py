@@ -102,7 +102,7 @@ class TopReceptyParser:
         portions_text = ingredients.find("h2", attrs={"class": "b-ingredients__title"}).find("span").text.strip()
         portions = portions_text.split(" ")
         if (len(portions) > 1):
-            header["portions"] = portions[1]
+            header["portions"] = int(portions[1])
         if (len(portions) > 2):
             header["portion_unit"] = portions[2]
 
