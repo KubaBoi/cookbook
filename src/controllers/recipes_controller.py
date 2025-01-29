@@ -11,6 +11,20 @@ from src.parsers.parser_manager import ParserManager
 #@controller /recipes;
 class RecipesController(cc):
 
+    #@get /get_all;
+    @staticmethod
+    def get_all_recipes(server, path, auth):
+        """
+        Return all recipes.
+        """
+        fls = ResMan.web("files")
+        r = []
+        for root, dir, files in os.walk(fls):
+            for file in files:
+                data = RecipesController.read_file(os.path.join(dir, file))
+                r.append(data)
+        return cc.createResponse({"recipes": r}, 200, {"Content-type": "application/json"})
+
     #@get /get;
     @staticmethod
     def get_recipes(server, path, auth):
