@@ -33,3 +33,23 @@ class IParser:
         with open(path, "w", encoding="utf-8") as f:
             f.write(json.dumps(recipe, ensure_ascii=False))
         return recipe["id"]
+    
+    @staticmethod
+    def parse_amount(amount_str: str) -> float:
+        try:
+            if (amount_str is None):
+                return None
+            
+            if (amount_str == "½"):
+                return 0.5
+            
+            if ("/" in amount_str):
+                vals = amount_str.split("/")
+                return float(vals[0]) / float(vals[1])
+
+            amount_str = amount_str.replace(",", ".")
+
+            return float(amount_str)
+        except Exception as e:
+            print(e)
+            return None

@@ -49,7 +49,12 @@ class ApetitParser:
         res = {"ingredients": []}
         for div in divs:
             if ("s-recipe__ingredients-item--subtitle" in div["class"]):
-                res["ingredients"].append((div.text.strip(), None))
+                res["ingredients"].append(
+                    {
+                        "name": div.text.strip(),
+                        "is_title": True
+                    }
+                )
                 continue
             
             name = div.find("strong").text
@@ -64,7 +69,15 @@ class ApetitParser:
             if (unit_span is not None):
                 unit = unit_span.text
             
-            res["ingredients"].append((name, f"{quant} {unit}".strip()))
+            res["ingredients"].append(
+                {
+                    "name": name,
+                    "amount": IParser.parse_amount(quant),
+                    "amount_str": quant,
+                    "unit": unit,
+                    "is_title": False
+                }
+            )
 
         return res
     
@@ -100,7 +113,8 @@ class ApetitParser:
 
         portions = port_text.split(" ")
         if (len(portions) > 1):
-            header["portions"] = int(portions[1])
+            ports = portions[1].split("–")
+            header["portions"] = int(ports[0])
         if (len(portions) > 2):
             header["portion_unit"] = portions[2]
 

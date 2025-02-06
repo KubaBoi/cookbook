@@ -57,17 +57,35 @@ class TopReceptyParser:
         for p in ps:
             if ("b-ingredients__item--title" in p["class"]):
                 # title (napr Testicko: )
-                res["ingredients"].append((p.text.strip(), None))
+                res["ingredients"].append(
+                    {
+                        "name": p.text.strip(),
+                        "is_title": True
+                    }
+                )
             else:
                 ings = p.text.strip().split("\n")
                 if (len(ings) > 1):
-                    # ingredience s poctem
-                    # (ingredience, pocet)
-                    res["ingredients"].append((ings[-1].strip(), ings[0]))
-                else:
-                    # ingredience bez poctu
-                    # (ingredience, "")
-                    res["ingredients"].append((ings[0].strip(), ""))
+                    amun = ings[0].split(" ")
+                    unit = None
+                    if (len(amun) > 1):
+                        unit = " ".join(amun[1:])
+                    res["ingredients"].append(
+                        {
+                            "name": ings[-1].strip(),
+                            "amount": IParser.parse_amount(amun[0]),
+                            "amount_str": amun[0],
+                            "unit": unit,
+                            "is_title": False
+                        }
+                    )
+                else: # ingredience bez poctu
+                    res["ingredients"].append(
+                        {
+                            "name": ings[0].strip(),
+                            "is_title": False
+                        }
+                    )
         return res
     
     @staticmethod

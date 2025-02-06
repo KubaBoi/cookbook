@@ -40,15 +40,22 @@ class ReceptyCzParser:
         for ing in ingredients:
             vals = ing.split(" ")
             if (vals[0].isnumeric()): # 1 ks kukurice na spizu 
-                res["ingredients"].append({
-                "name": " ".join(vals[2:]), 
-                "amount": int(vals[0]),
-                "unit": vals[1]})
+                res["ingredients"].append(
+                    {
+                        "name": " ".join(vals[2:]), 
+                        "amount": IParser.parse_amount(vals[0]),
+                        "amount_str": vals[0],
+                        "unit": vals[1],
+                        "is_title": False
+                    }
+                )
             else: # "pepr mlety"
-                res["ingredients"].append({
-                    "name": ing, 
-                    "amount": None,
-                    "unit": None})
+                res["ingredients"].append(
+                    {
+                        "name": ing,
+                        "is_title": False
+                    }
+                )
         return res
     
     @staticmethod
