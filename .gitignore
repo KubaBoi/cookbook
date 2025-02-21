@@ -2,6 +2,7 @@
 /.metadata/
 logs/*.log
 logs/*.html
+/web/files/*
 
 adminSettings.json
 secrets.json

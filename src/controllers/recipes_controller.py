@@ -11,7 +11,7 @@ from src.parsers.parser_manager import ParserManager
 #@controller /recipes;
 class RecipesController(cc):
 
-    #@get /get_all;
+    #@get /getAll;
     @staticmethod
     def get_all_recipes(server, path, auth):
         """
@@ -25,13 +25,13 @@ class RecipesController(cc):
                 r.append(data)
         return cc.createResponse(r, 200, {"Content-type": "application/json"})
     
-    #@get /get_recipe;
+    #@get /getRecipe;
     @staticmethod
     def get_recipe(server, path, auth):
         """
         Return details one recipe.
 
-        /recipes/get_recipe?id=id
+        /recipes/getRecipe?id=id
         """
         args = cc.getArgs(path)
         cc.checkJson(["id"], args)
@@ -39,7 +39,7 @@ class RecipesController(cc):
         data = RecipesController.read_file(args["name"])
         return cc.createResponse(data, 200, {"Content-type": "application/json"})
     
-    #@post /post_recipe;
+    #@post /postRecipe;
     @staticmethod
     def post_recipe(server, path, auth):
         """
